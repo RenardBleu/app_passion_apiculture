@@ -33,6 +33,24 @@ db.connect((err) => {
   console.log('Connecté à la base de données MySQL');
 });
 
+app.get('/connect/:nom', (req, res) => {
+  // Capture le paramètre 'nom' de l'URL
+  const nom = '%'+req.params.nom+'%';
+  // Crée la requête SQL avec un paramètre pour le nom
+  const sql = 'SELECT nom, prenom, email FROM users WHERE nom LIKE ?';
+  db.query(sql, [nom], (err, results) => {
+  if (err) {
+  return res.status(500).send(err);
+  }
+  if (results.length === 0) {
+  // Si aucune nation n'est trouvée, renvoyer une erreur 404
+  return res.status(404).json({ message: 'Nation not found' });
+  }
+  // Si des résultats sont trouvés, renvoyer les données
+  res.json(results);
+  });
+});
+
 // Démarrage du serveur
 app.listen(port, () => {
   console.log(`Serveur API en écoute sur http://localhost:${port}`);
