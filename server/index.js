@@ -8,13 +8,15 @@ const dbName = process.env.DB_NAME;
 
 const express = require('express');
 const mysql = require('mysql2');
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
+const authRouter = require("./routes/auth");
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT;
 
 // Middleware pour parser le body des requêtes en JSON
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(authRouter);
 
 // Configuration de la connexion à MySQL
 const db = mysql.createConnection({
@@ -33,7 +35,10 @@ db.connect((err) => {
   console.log('Connecté à la base de données MySQL');
 });
 
-app.get('/connect/:nom', (req, res) => {
+app.listen(PORT, () => {
+  console.log(`Serveur API en écoute sur http://localhost:${PORT}`);
+});
+/*app.get('/connect/:nom', (req, res) => {
   // Capture le paramètre 'nom' de l'URL
   const nom = '%'+req.params.nom+'%';
   // Crée la requête SQL avec un paramètre pour le nom
@@ -49,9 +54,6 @@ app.get('/connect/:nom', (req, res) => {
   // Si des résultats sont trouvés, renvoyer les données
   res.json(results);
   });
-});
+});*/
 
 // Démarrage du serveur
-app.listen(port, () => {
-  console.log(`Serveur API en écoute sur http://localhost:${port}`);
-});
