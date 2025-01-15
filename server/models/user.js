@@ -54,15 +54,21 @@ class User {
         }
     }
 
-    static async findByEmail(email) {
+    static async findByEmail(email, callback) {
         try {
-            console.log(await db.execute('SELECT * FROM users WHERE email = ?', [email]));
-            const [rows, fields] = await db.execute('SELECT COUNT(*) FROM users WHERE email = ?', [email]);
-            console.log(rows);
-            if (rows.lenth === 0) {
-                return null; // Retourne null si aucun utilisateur n'est trouvé
-            }
-            return new User(rows); // Crée une instance de User
+            //console.log(await db.execute('SELECT * FROM users WHERE email = ?', [email]));
+            const rows = await db.execute('SELECT COUNT(*) FROM users WHERE email = ?', [email], (err, rows) => {
+                if (err) {
+                    return callback(err);
+                }
+    
+                if (rows.length === 0) {
+                    return callback(null, null); // Important : callback(null, null) pour indiquer "pas trouvé"
+                }
+    
+                callback(null, new User(rows[0]));
+            });
+            return new User(rows[0]); // Crée une instance de User
         } catch (error) {
             console.error("Erreur lors de la recherche par email :", error);
             throw error;

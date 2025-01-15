@@ -24,7 +24,7 @@ authRouter.post("/api/signup", async (req, res) => {
         password: hashedPassword
     });
 
-    newUser = await newUser.create()
+    newUser = await User.create(newUser);
 
 
 
