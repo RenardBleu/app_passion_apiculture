@@ -1,15 +1,10 @@
 require('dotenv').config();
 
-// Use the environment variables in your app
-const dbHost = process.env.DB_HOST;
-const dbUser = process.env.DB_USER;
-const dbPassword = process.env.DB_PASSWORD;
-const dbName = process.env.DB_NAME;
-
 const express = require('express');
 const mysql = require('mysql2');
 //const bodyParser = require('body-parser');
 const authRouter = require("./routes/auth");
+const db = require("./db");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -18,12 +13,8 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(authRouter);
 
-// Configuration de la connexion à MySQL
-const db = mysql.createConnection({
-  host: dbHost, // Remplacez par l'IP de votre serveur MySQL
-  user: dbUser,         // Nom d'utilisateur de la base de données
-  password: dbPassword,     // Mot de passe de la base de données
-  database: dbName            // Nom de la base de données
+app.listen(PORT, () => {
+  console.log(`Serveur API en écoute sur http://localhost:${PORT}`);
 });
 
 // Connexion à MySQL
@@ -33,10 +24,6 @@ db.connect((err) => {
     return;
   }
   console.log('Connecté à la base de données MySQL');
-});
-
-app.listen(PORT, () => {
-  console.log(`Serveur API en écoute sur http://localhost:${PORT}`);
 });
 /*app.get('/connect/:nom', (req, res) => {
   // Capture le paramètre 'nom' de l'URL
