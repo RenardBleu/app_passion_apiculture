@@ -40,7 +40,7 @@ class User {
             return null; // Retourne null si aucun utilisateur n'est trouvé
         } catch (error) {
             console.error("Erreur lors de la recherche par email :", error);
-            throw error; // Retourne l'erreur pour la gérer plus haut
+            throw error; // Renvoyer l'erreur pour la gérer plus haut
         }
     }
 
