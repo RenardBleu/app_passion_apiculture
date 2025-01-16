@@ -14,17 +14,17 @@ app.use(express.json());
 app.use(authRouter);
 
 app.listen(PORT, () => {
-  console.log(`Serveur API en écoute sur http://localhost:${PORT}`);
+  console.log(`▮ Serveur API en écoute sur http://localhost:${PORT}`);
 });
 
 // Connexion à MySQL
-db.connect((err) => {
+/*db.connect((err) => {
   if (err) {
     console.error('Erreur de connexion à MySQL:', err);
     return;
   }
   console.log('Connecté à la base de données MySQL');
-});
+});*/
 /*app.get('/connect/:nom', (req, res) => {
   // Capture le paramètre 'nom' de l'URL
   const nom = '%'+req.params.nom+'%';
