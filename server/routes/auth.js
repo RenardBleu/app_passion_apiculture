@@ -10,7 +10,17 @@ const User = require('../models/user')
 authRouter.post("/api/signup", async (req, res) => {
     const {nom, prenom, email, password} = req.body;
 
-    const existingUser = await User.findByEmail(email);
+    const existingUser = await User.findByEmail(email)
+    .then(user => {
+        if (user) {
+            console.log('Utilisateur trouvé :', user);
+        } else {
+            console.log('Utilisateur non trouvé.');
+        }
+    })
+    .catch(error => {
+        console.error("Erreur lors de la recherche :", error);
+    });
     if (existingUser){
         return res.status(400).json({message:"Email deja utilisé par un autre utilisateur !"});
     }

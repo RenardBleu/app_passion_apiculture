@@ -43,33 +43,27 @@ class User {
 
     static async create(userData) {
         try {
-            const [result] = await db.execute(
+            const [rows] = await db.execute(
                 'INSERT INTO users (nom, prenom, email, mdp) VALUES (?, ?, ?, ?)',
                 [userData.nom, userData.prenom, userData.email, userData.password]
             );
-            return new User({...userData, id: result.insertId}); // retourne l'utilisateur créé avec son id
+            return new User({...userData, id: rows.insertId}); // retourne l'utilisateur créé avec son id
         } catch (error) {
-            console.error("Erreur lors de la création de l'utilisateur :", err);
-            throw err; // Renvoyer l'erreur pour être gérée par l'appelant
+            console.error("Erreur lors de la création de l'utilisateur :", error);
+            throw error; // Renvoyer l'erreur pour être gérée par l'appelant
         }
     }
 
-    static async findByEmail(email, callback) {
+    static async findByEmail(email) {
         try {
-            //console.log(await db.execute('SELECT * FROM users WHERE email = ?', [email]));
-            const rows = await db.execute('SELECT COUNT(*) FROM users WHERE email = ?', [email], (err, rows) => {
-                if (err) {
-                    return callback(err);
-                }
-    
-                if (rows.length === 0) {
-                    return callback(null, null); // Important : callback(null, null) pour indiquer "pas trouvé"
-                }
-    
-                callback(null, new User(rows[0]));
-            });
+            const rows = await db.query(
+                'SELECT * FROM users WHERE email = ?', [email]);
+            if (rows.length === 0) {
+                return null; // Retourne null si aucun utilisateur n'est trouvé
+            }
             return new User(rows[0]); // Crée une instance de User
         } catch (error) {
+            console.log(rows);
             console.error("Erreur lors de la recherche par email :", error);
             throw error;
         }
