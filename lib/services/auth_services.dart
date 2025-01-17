@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_passion_apiculture/models/user.dart';
+import 'package:app_passion_apiculture/utils/constants.dart';
+import 'package:app_passion_apiculture/utils/utils.dart';
 import 'package:http/http.dart' as http;
 
 class AuthServices {
@@ -21,13 +23,22 @@ class AuthServices {
       );
 
       http.Response res = await http.post(
-        //Uri.parse('${Constants.uri}/api/signup'),
-        Uri.parse('http://localhost:3000/api/signup'),
+        Uri.parse('${Constants.uri}/api/signup'),
         body: user.toJson(),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF8',
-        }
+        },
       );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: (){
+          showSnackBar(
+            context, 'Compte crée avec succé ! Connect toi avec les mêmes identifiants'
+          );
+        }
+      )
     }catch(e){
 
     }
