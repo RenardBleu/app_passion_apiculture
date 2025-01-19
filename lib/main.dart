@@ -1,6 +1,7 @@
 import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:app_passion_apiculture/screens/basic_screen.dart';
 import 'package:app_passion_apiculture/screens/signup_screen.dart';
 
 void main() {
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const BasicTestScreen(),
+      home: SignupScreen(),
+      //home: const BasicTestScreen(),
     );
   }
 }

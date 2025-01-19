@@ -38,7 +38,7 @@ class AuthServices {
             context, 'Compte crée avec succé ! Connect toi avec les mêmes identifiants'
           );
         }
-      )
+      );
     }catch(e){
 
     }

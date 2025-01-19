@@ -6,7 +6,9 @@ class BasicTestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Simple Screen")),
+      appBar: AppBar(
+        title: const Text("Simple Screen")
+        ),
       body: const Center(
         child: Text(
           "Bonjour, ceci est un écran simple !",
