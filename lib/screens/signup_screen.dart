@@ -57,67 +57,57 @@ class _SignupScreenState extends State<SignupScreen>{
               ),
             ),
             const SizedBox(height: 20),
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: nomController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
                 labelText: 'Nom',
-                border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.account_circle_rounded),
               ),
-              keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: prenomController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
                 labelText: 'Prenom',
-                border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.account_circle_rounded),
               ),
-              keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Email',
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
+                labelText: 'Email',
                 prefixIcon: Icon(Icons.email),
               ),
-              keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Mot de passe',
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
+                labelText: 'Password',
                 prefixIcon: Icon(Icons.lock),
               ),
               obscureText: true,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Action à définir pour la connexion
-              },
+              /*onPressed: () {
+                print("Test email :");
+                print(emailController.text);
+                print(nomController.text);
+                print(prenomController.text);
+                print(passwordController.text);
+              },*/
+              onPressed: loginUser,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
               ),
-              child: const Text(
-                'Se connecter',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-            /*SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Aucun comportement pour le moment
-              },
-              child: Text('S\'inscire'),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-              ),
-            ),*/
+              child: const Text('S\'inscire'),
+            )
           ],
         ),
       ),

@@ -67,6 +67,12 @@ authRouter.post("/api/signin", async (req, res) => {
                 message: "Email ou mot de passe incorrect"
             });
         }
+        if(user.idRole == 2){
+            return res.status(400).json({
+                success: false,
+                message: "Vous n'êtes pas un administrateur"
+            });
+        }
         const token = jwt.sign({id: user.id}, "passwordKey");
 
         const { mdp, ...userWithoutPassword } = user;
