@@ -18,8 +18,8 @@ class _SignupScreenState extends State<SignupScreen>{
 
   
 
-  void loginUser(){
-    authServices.signUpUser(
+  void SignIn(){
+    authServices.signInUser(
       context: context, 
       email: emailController.text, 
       password: passwordController.text, 
@@ -95,14 +95,14 @@ class _SignupScreenState extends State<SignupScreen>{
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              /*onPressed: () {
+              onPressed: () {
                 print("Test email :");
                 print(emailController.text);
                 print(nomController.text);
                 print(prenomController.text);
                 print(passwordController.text);
-              },*/
-              onPressed: loginUser,
+                SignIn();
+              },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),

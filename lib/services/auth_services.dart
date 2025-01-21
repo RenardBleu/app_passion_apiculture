@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/utils/constants.dart';
+import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:app_passion_apiculture/utils/utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class AuthServices {
-  void signUpUser({
+
+  void signInUser({
     required BuildContext context,
     required String email,
     required String password,
@@ -21,6 +24,10 @@ class AuthServices {
         token: '', 
         password: password
       );
+      print(user.email);
+      print(user.nom);
+      print(user.prenom);
+      print(user.password);
 
       http.Response res = await http.post(
         Uri.parse('${Constants.uri}/api/signup'),
@@ -39,6 +46,21 @@ class AuthServices {
           );
         }
       );
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+
+  void LoginUser({
+    required BuildContext context,
+    required String email,
+    required String password,
+  })
+  async {
+    try {
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      final navigator = Navigator.of(context);
     }catch(e){
       showSnackBar(context, e.toString());
     }

@@ -12,7 +12,8 @@ const db = mysql.createPool({
     host: dbHost, // Remplacez par l'IP de votre serveur MySQL
     user: dbUser,         // Nom d'utilisateur de la base de données
     password: dbPassword,     // Mot de passe de la base de données
-    database: dbName            // Nom de la base de données
+    database: dbName,            // Nom de la base de données
+    connectTimeout: 1000000
   });
 
 // Test connection à la DB  

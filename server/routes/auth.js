@@ -10,7 +10,7 @@ const User = require('../models/user')
 
 authRouter.post("/api/signup", async (req, res) => {
     const {nom, prenom, email, password} = req.body; // Récupère les données de la request
-
+    
     const existingUser = await User.findByEmail(email); // Vérifie si l'email est déjà utilisé dans la db
     if (existingUser) {
         return res.status(400).json({ 

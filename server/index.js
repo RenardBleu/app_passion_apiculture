@@ -17,6 +17,17 @@ app.listen(PORT, () => {
   console.log(`▮ Serveur API en écoute sur http://localhost:${PORT}`);
 });
 
+
+app.get('/ping', (req, res) => {
+  const startTime = Date.now(); // Capture du temps avant réponse
+
+  // Simuler une réponse pour mesurer le ping
+  setImmediate(() => {
+    const latency = Date.now() - startTime; // Calcul du ping
+    res.json({ message: 'pong', ping: `${latency}ms` });
+  });
+});
+
 // Connexion à MySQL
 /*db.connect((err) => {
   if (err) {
