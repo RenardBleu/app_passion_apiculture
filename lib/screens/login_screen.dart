@@ -1,31 +1,26 @@
-import 'package:app_passion_apiculture/screens/login_screen.dart';
+import 'package:app_passion_apiculture/screens/signup_screen.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen>{
+class _LoginScreenState extends State<LoginScreen>{
   
   final AuthServices authServices = AuthServices();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController nomController = TextEditingController();
-  final TextEditingController prenomController = TextEditingController();
-
   
 
-  void SignIn(){
-    authServices.signInUser(
+  void Login(){
+    authServices.LoginUser(
       context: context, 
       email: emailController.text, 
       password: passwordController.text, 
-      nom: nomController.text, 
-      prenom: prenomController.text
     );
   }
 
@@ -33,7 +28,7 @@ class _SignupScreenState extends State<SignupScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inscription'),
+        title: const Text('Connection'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -50,29 +45,11 @@ class _SignupScreenState extends State<SignupScreen>{
               ),
             ),
             const Text(
-              "Bienvenue à vous!",
+              "Connectez votre compte administrateur",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: nomController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Nom',
-                prefixIcon: Icon(Icons.account_circle_rounded),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: prenomController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Prenom',
-                prefixIcon: Icon(Icons.account_circle_rounded),
               ),
             ),
             const SizedBox(height: 20),
@@ -99,24 +76,22 @@ class _SignupScreenState extends State<SignupScreen>{
               onPressed: () {
                 print("Test email :");
                 print(emailController.text);
-                print(nomController.text);
-                print(prenomController.text);
                 print(passwordController.text);
-                SignIn();
+                Login();
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              child: const Text('S\'inscire'),
+              child: const Text('Se connecter'),
             ),
             const SizedBox(height: 20),
             TextButton(
               onPressed: () {
                 Navigator.pushReplacement(
                   context, 
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  MaterialPageRoute(builder: (context) => const SignupScreen()),
                 );
-              }, child: Text('Se connecter'),
+              }, child: Text('S\'inscrire'),
             )
           ],
         ),

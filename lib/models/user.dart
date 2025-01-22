@@ -27,6 +27,9 @@ class User {
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
+    print('----MAP-----');
+    print(map);
+    print(map['user']['id']);
     return User(
       id: map['id'] ?? '',
       nom: map['nom'] ?? '',

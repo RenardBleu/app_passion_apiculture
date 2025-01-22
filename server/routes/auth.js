@@ -74,9 +74,7 @@ authRouter.post("/api/signin", async (req, res) => {
             });
         }
         const token = jwt.sign({id: user.id}, "passwordKey");
-
         const { mdp, ...userWithoutPassword } = user;
-
         res.json({ token, user: userWithoutPassword});
 
     }catch (e){
