@@ -74,27 +74,22 @@ class AuthServices {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print('-------TESTEE-------');
-          print(res.body);
       httpErrorHandle(
         response: res,
         context: context,
         onSuccess: () async{
           SharedPreferences pref = await SharedPreferences.getInstance();
-          print("cdzjkcijzdpocjz");
           userProvider.setUser(res.body);
-          print("cdzjkcijzdpocjz");
           await pref.setString('x-auth-token', jsonDecode(res.body)['token']);
-          /*navigator.pushAndRemoveUntil(
+          print(userProvider.user.email);
+          navigator.pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => const BasicTestScreen(),
             ),
             (route) => false,
-          );*/
+          );
         },
       );
-      print('-------TEST-------');
-      print(userProvider.user.email);
     }catch(e){
       showSnackBar(context, e.toString());
     }
