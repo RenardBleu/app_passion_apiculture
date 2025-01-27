@@ -1,5 +1,5 @@
 import 'package:app_passion_apiculture/providers/user_provider.dart';
-import 'package:app_passion_apiculture/screens/basic_screen.dart';
+import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,8 +41,7 @@ class _MyappState extends State<MyApp>{
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: Provider.of<UserProvider>(context).user.token.isEmpty ? const LoginScreen(): const BasicTestScreen() ,
-      //home: const BasicTestScreen(),
+      home: Provider.of<UserProvider>(context).user.token.isEmpty ? const LoginScreen(): const HomeScreen() ,
     );
   }
 }

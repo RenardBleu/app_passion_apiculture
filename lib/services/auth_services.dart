@@ -1,5 +1,5 @@
 import 'package:app_passion_apiculture/providers/user_provider.dart';
-import 'package:app_passion_apiculture/screens/basic_screen.dart';
+import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/screens/login_screen.dart';
 import 'package:app_passion_apiculture/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -85,7 +85,7 @@ class AuthServices {
           print(userProvider.user.email);
           navigator.pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => const BasicTestScreen(),
+              builder: (context) => const HomeScreen(),
             ),
             (route) => false,
           );

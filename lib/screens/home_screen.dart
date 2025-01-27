@@ -3,8 +3,8 @@ import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-class BasicTestScreen extends StatelessWidget {
-  const BasicTestScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   void signOutUser(BuildContext context) {
     AuthServices().signOut(context);
@@ -19,9 +19,6 @@ class BasicTestScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Accueil")
         ),
-
-
-        
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
