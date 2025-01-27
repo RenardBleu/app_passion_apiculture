@@ -1,4 +1,6 @@
 import 'package:app_passion_apiculture/providers/user_provider.dart';
+import 'package:app_passion_apiculture/screens/basic_screen.dart';
+import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_passion_apiculture/screens/login_screen.dart';
@@ -15,18 +17,31 @@ void main() {
     ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}): super(key: key);
 
-  // This widget is the root of your application.
   @override
+  State<MyApp> createState() => _MyappState();
+}
+
+class _MyappState extends State<MyApp>{
+  final AuthServices authServices = AuthServices();
+
+  @override
+  void initState(){
+    super.initState();
+    authServices.getUserData(context);
+  }
+
+
+   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Admin Passion Apiculture',
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const LoginScreen(),
+      home: Provider.of<UserProvider>(context).user.token.isEmpty ? const LoginScreen(): const BasicTestScreen() ,
       //home: const BasicTestScreen(),
     );
   }

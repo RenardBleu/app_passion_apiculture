@@ -84,15 +84,6 @@ class _LoginScreenState extends State<LoginScreen>{
               ),
               child: const Text('Se connecter'),
             ),
-            const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context, 
-                  MaterialPageRoute(builder: (context) => const SignupScreen()),
-                );
-              }, child: Text('S\'inscrire'),
-            )
           ],
         ),
       ),

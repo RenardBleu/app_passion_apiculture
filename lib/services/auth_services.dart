@@ -1,5 +1,6 @@
 import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:app_passion_apiculture/screens/basic_screen.dart';
+import 'package:app_passion_apiculture/screens/login_screen.dart';
 import 'package:app_passion_apiculture/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_passion_apiculture/utils/utils.dart';
@@ -93,5 +94,57 @@ class AuthServices {
     }catch(e){
       showSnackBar(context, e.toString());
     }
+  }
+
+
+  // get user data
+
+  void getUserData(
+    BuildContext context,
+  ) async{
+    try{
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String? token = pref.getString('x-auth-token');
+
+    if(token == null){
+      pref.setString('x-auth-token', '');
+    }
+
+    var tokenRes = await http.post(
+      Uri.parse('${Constants.uri}/tokenIsValid'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': token!,
+      },
+    );
+
+    var response = jsonDecode(tokenRes.body);
+
+    if(response == true){
+      http.Response userRes = await http.get(
+        Uri.parse('${Constants.uri}/'),
+        headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8','x-auth-token': token}
+      );
+
+      userProvider.setUser(userRes.body);
+    }
+
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+
+  void signOut(BuildContext context) async{
+    final navigator = Navigator.of(context);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('x-auth-token', '');
+    navigator.pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context)=> const LoginScreen()
+        ),
+         (route) => false,
+    );
   }
 }
