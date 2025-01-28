@@ -58,10 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedLabelStyle: TextStyle(
           fontWeight: FontWeight.bold,
         ),
-        currentIndex: _currentIndex, // Index sélectionné
+        currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            _currentIndex = index; // Met à jour l'index sélectionné
+            _currentIndex = index;
           });
         },
         items: [
