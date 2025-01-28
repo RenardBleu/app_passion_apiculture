@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +24,20 @@ class UserScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.all(40),
+              margin: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
+              width: 400,
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Color.fromARGB(255, 221, 221, 221),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(50, 0, 0, 0),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -39,35 +47,102 @@ class UserScreen extends StatelessWidget {
                     size: 150,
                     color: const Color.fromARGB(255, 249, 177, 20),
                   ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          textAlign: TextAlign.start,
-                          user.nom, 
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        textAlign: TextAlign.start,
+                        "compte gérant :", 
+                        style: TextStyle(
+                          fontSize: 15,
                         ),
-                        Text(
-                          user.prenom,
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
+                      ),
+                      Text(
+                        textAlign: TextAlign.start,
+                        user.nom, 
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold
                         ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        user.prenom,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
+              width: 400,
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromARGB(255, 221, 221, 221),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(50, 0, 0, 0),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Crée le : ",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text(
+                        user.createAt,
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Email : ",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text(
+                        user.email,
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ),
             ElevatedButton(
               onPressed: () => signOutUser(context),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: const Color.fromARGB(255, 249, 177, 20),
               ),
-              child: const Text('Se déconnecter'),
+              child: const Text(
+                'Se déconnecter',
+                style: TextStyle(
+                  color: Colors.black,
+                )
+              ),
             ),
           ],
         )

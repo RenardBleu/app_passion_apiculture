@@ -57,9 +57,17 @@ authRouter.post("/api/signin", async (req, res) => {
         if(!user){
             return res.status(400).json({
                 success: false,
-                messsage: "Email ou mot de passe incorrect"
+                message: "Email ou mot de passe incorrect"
             });
         }
+
+        if(user.DeleteAt != null){
+            return res.status(400).json({
+                success: false,
+                message: "Le compte a été suprimé"
+            });
+        }
+
         const isMatch = await bcryptjs.compare(password, user.mdp);
         console.log(user)
         if(!isMatch){

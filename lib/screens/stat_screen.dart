@@ -2,11 +2,11 @@ import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
-class AccueilScreen extends StatelessWidget {
+class StatScreen extends StatelessWidget {
 
   final User user; 
 
-  const AccueilScreen(this.user, {Key? key}) : super(key: key);
+  const StatScreen(this.user, {Key? key}) : super(key: key);
 
   void signOutUser(BuildContext context) {
     AuthServices().signOut(context);
@@ -20,7 +20,7 @@ class AccueilScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Accueil",
+              "page des stats",
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold

@@ -1,9 +1,9 @@
 import 'package:app_passion_apiculture/providers/user_provider.dart';
-import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:app_passion_apiculture/screens/login_screen.dart';
+import 'package:app_passion_apiculture/screens/home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 
 
@@ -37,6 +37,7 @@ class _MyappState extends State<MyApp>{
    @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Admin Passion Apiculture',
       theme: ThemeData(
         primarySwatch: Colors.amber,
