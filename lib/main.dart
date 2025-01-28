@@ -41,7 +41,7 @@ class _MyappState extends State<MyApp>{
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: Provider.of<UserProvider>(context).user.token.isEmpty ? const LoginScreen(): const HomeScreen() ,
+      home: Provider.of<UserProvider>(context).user.token.isEmpty ? const LoginScreen(): HomeScreen() ,
     );
   }
 }
