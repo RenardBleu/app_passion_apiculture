@@ -10,12 +10,23 @@ import 'package:app_passion_apiculture/screens/stock_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
+
+  final int initialIndex; // Nouveau paramètre pour définir l'index initial
+
+  const HomeScreen({Key? key, this.initialIndex = 0}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex; // Utiliser le paramètre initial
+  }
 
 @override
   Widget build(BuildContext context) {

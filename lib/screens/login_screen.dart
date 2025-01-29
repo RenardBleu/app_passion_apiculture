@@ -27,14 +27,15 @@ class _LoginScreenState extends State<LoginScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connection'),
+        title: const Text('Connexion'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Image.asset("assets/images/logo-site.png", scale: 5,),
             const Text(
               "Passion apiculture",
               textAlign: TextAlign.center,
@@ -54,19 +55,37 @@ class _LoginScreenState extends State<LoginScreen>{
             const SizedBox(height: 20),
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(
+              cursorColor: Color.fromARGB(255, 249, 177, 20),
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.black),
+                enabledBorder:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                focusedBorder:OutlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
+                  borderRadius: BorderRadius.circular(10)
+                ),
                 border: OutlineInputBorder(),
                 labelText: 'Email',
-                prefixIcon: Icon(Icons.email),
+                prefixIcon: Icon(Icons.email, color: Colors.black,),
               ),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: passwordController,
-              decoration: const InputDecoration(
+              cursorColor: Color.fromARGB(255, 249, 177, 20),
+              decoration: InputDecoration(
+                labelStyle: TextStyle(color: Colors.black),
+                enabledBorder:OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                focusedBorder:OutlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
+                  borderRadius: BorderRadius.circular(10)
+                ),
                 border: OutlineInputBorder(),
                 labelText: 'Password',
-                prefixIcon: Icon(Icons.lock),
+                prefixIcon: Icon(Icons.lock, color: Colors.black,),
               ),
               obscureText: true,
             ),
@@ -79,9 +98,12 @@ class _LoginScreenState extends State<LoginScreen>{
                 Login();
               },
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: const Color.fromARGB(255, 249, 177, 20),
               ),
-              child: const Text('Se connecter'),
+              child: const Text(
+                'Se connecter',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ],
         ),
