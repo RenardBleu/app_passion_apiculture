@@ -43,7 +43,6 @@ authRouter.post("/api/signup", async (req, res) => {
 
 authRouter.post("/api/signin", async (req, res) => {
     try{
-        console.log("📩 Données reçues :", req.body);
         const {email, password} = req.body;
 
         if (!email || !password) {
@@ -112,7 +111,7 @@ authRouter.post("/tokenIsValid", async (req, res)=>{
 
 authRouter.get("/", auth, async (req, res) =>{
     const user = await User.findById(req.user);
-    res.json({...user._doc, token: req.token});
+    res.json({...user, token: req.token});
 });
 
 module.exports = authRouter;

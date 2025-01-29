@@ -1,10 +1,8 @@
 require('dotenv').config();
 
 const express = require('express');
-const mysql = require('mysql2');
-//const bodyParser = require('body-parser');
 const authRouter = require("./routes/auth");
-const db = require("./db");
+const productRouter = require("./routes/product");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -12,6 +10,7 @@ const PORT = process.env.PORT;
 // Middleware pour parser le body des requêtes en JSON
 app.use(express.json());
 app.use(authRouter);
+app.use(productRouter);
 
 app.listen(PORT, () => {
   console.log(`▮ Serveur API en écoute sur http://localhost:${PORT}`);

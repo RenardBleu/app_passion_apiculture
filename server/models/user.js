@@ -1,14 +1,5 @@
 const db = require('../db');
 
-const findUserById = (id, callback) =>{
-    db.query("SELECT * FROM users WHERE id = ?", [id], (err, row) => {
-        if (err) {
-            return callback(err);
-        }
-        callback(err, row[0]);
-    });
-}
-
 class User {
     constructor(userData) {
         this.email = userData.email;
