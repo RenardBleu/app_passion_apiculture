@@ -1,6 +1,7 @@
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
+import 'package:app_passion_apiculture/services/product_services.dart';
 import 'package:flutter/material.dart';
 
 class AccueilScreen extends StatelessWidget {
@@ -8,10 +9,16 @@ class AccueilScreen extends StatelessWidget {
   final User user; 
 
   const AccueilScreen(this.user, {Key? key}) : super(key: key);
+  
+  get context => null;
 
   void signOutUser(BuildContext context) {
     AuthServices().signOut(context);
   }
+
+  /* void GetProduct(BuildContext contex){
+    ProductServices().getProduct(token: user.token, context: null);
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -285,6 +292,24 @@ class AccueilScreen extends StatelessWidget {
                           ),
                           child: const Text(
                             'Voir plus',
+                            style: TextStyle(
+                              color: Colors.black,
+                            )
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 5),
+                        child: 
+                          ElevatedButton(
+                          onPressed: () {
+                            //GetProduct(token: user.token);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(255, 249, 177, 20),
+                          ),
+                          child: const Text(
+                            'Voir yoooo',
                             style: TextStyle(
                               color: Colors.black,
                             )
