@@ -1,7 +1,9 @@
+import 'package:app_passion_apiculture/providers/product_provider.dart';
 import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:app_passion_apiculture/screens/login_screen.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
+import 'package:app_passion_apiculture/services/product_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
       ],
       child: const MyApp(),
     ));
@@ -26,6 +29,7 @@ class MyApp extends StatefulWidget {
 
 class _MyappState extends State<MyApp>{
   final AuthServices authServices = AuthServices();
+  final ProductServices productServices = ProductServices();
 
   @override
   void initState(){

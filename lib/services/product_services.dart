@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class ProductServices {
   void getProduct({
     required BuildContext context,
@@ -28,10 +29,9 @@ class ProductServices {
         response: res,
         context: context,
         onSuccess: () async{
-          SharedPreferences pref = await SharedPreferences.getInstance();
           productProvider.setProducts(res.body);
-          await pref.setString('x-auth-token', jsonDecode(res.body)['token']);
-          print(productProvider);
+          print("------------");
+          print(productProvider.products[1].title);
         },
       );
     }catch(e){

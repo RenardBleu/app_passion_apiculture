@@ -8,12 +8,19 @@ class AccueilScreen extends StatelessWidget {
 
   final User user; 
 
-  const AccueilScreen(this.user, {Key? key}) : super(key: key);
+  const AccueilScreen(this.user, this.products, {Key? key}) : super(key: key);
   
   get context => null;
 
   void signOutUser(BuildContext context) {
     AuthServices().signOut(context);
+  }
+
+  void GetProduct(BuildContext context, String token){
+    ProductServices().getProduct(
+      context: context, 
+      token: user.token
+      );
   }
 
   /* void GetProduct(BuildContext contex){
@@ -303,7 +310,7 @@ class AccueilScreen extends StatelessWidget {
                         child: 
                           ElevatedButton(
                           onPressed: () {
-                            //GetProduct(token: user.token);
+                            
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(255, 249, 177, 20),

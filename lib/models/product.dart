@@ -44,17 +44,19 @@ class Product {
       updateAt: map['product']['UpdateAt'] ?? ''
     );
   } */
-
    factory Product.fromMap(Map<String, dynamic> map) {
+    print("======================================");
+    print(map);
+    print("======================================");
     return Product(
-      id: map['id'],
-      title: map['title'],
+      id: map['id'].toString(),
+      title: map['title'] ?? '',
       descrip: map['description'],
-      prix: map['prix'].toDouble(),
-      idType: map['idType'],
+      prix: map['prix'].toString(),
+      idType: map['idType'].toString(),
       minia: map['miniature'] ?? '',
-      updateAt: map['UpdateAt'],
-      createAt: map['CreateAt'],
+      updateAt: map['UpdateAt'] ?? '',
+      createAt: map['CreateAt'] ?? '',
     );
   }
 
@@ -65,6 +67,4 @@ class Product {
   }
 
   String toJson() => json.encode(toMap());
-
-  /* factory Product.fromJson(String source) => Product.fromMap(json.decode(source)); */
 }
