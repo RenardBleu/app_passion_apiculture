@@ -11,8 +11,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>{
   
   final AuthServices authServices = AuthServices();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(text: 'alexislabaste84100@gmail.com');
+  final TextEditingController passwordController = TextEditingController(text: '#Mimi6162oo5@');
   
 
   void Login(){
@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen>{
             ),
             const SizedBox(height: 20),
             TextField(
+              
               controller: passwordController,
               cursorColor: Color.fromARGB(255, 249, 177, 20),
               decoration: InputDecoration(

@@ -12,9 +12,15 @@ class Product{
 
     static async findAll(){
         try {
-            const [row] = await db.execute('SELECT * FROM produit');
+            const [row] = await db.execute('SELECT p.id, title, description, prix, t.libelle AS type, miniature, UpdateAt, CreateAt, DeleteAt FROM produit p JOIN type t ON p.idType = t.id ORDER BY p.UpdateAt DESC');
             if (row.length > 0) {
-                return row;
+                const formattedRows = row.map(row => {
+                    return {
+                        ...row,
+                        prix: parseFloat(row.prix).toFixed(2), // Formatage du prix
+                    };
+                });
+                return formattedRows;
             }
             return null;
         }catch (error){

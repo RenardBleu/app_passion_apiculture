@@ -1,6 +1,5 @@
 import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:app_passion_apiculture/providers/product_provider.dart';
-import 'package:app_passion_apiculture/services/product_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:app_passion_apiculture/screens/accueil_screen.dart';
@@ -38,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final List<List> screens = [
       [AccueilScreen(user, product), "Accueil"],
-      [ProduitScreen(user), "Catalogue"],
+      [ProduitScreen(user, product), "Catalogue"],
       [CommandeScreen(user), "Commande"],
       [StockScreen(user), "Stock"],
       [StatScreen(user), "Statistique"]

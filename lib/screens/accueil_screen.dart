@@ -71,7 +71,6 @@ class AccueilScreen extends StatelessWidget {
                     
 
                       // -- CONTENT --
-                      //B1
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -124,7 +123,7 @@ class AccueilScreen extends StatelessWidget {
                                               ), 
                                             ),
                                             Text(
-                                              produit.idType,
+                                              produit.type,
                                               style: TextStyle(
                                                 fontSize: 18,
                                               ),

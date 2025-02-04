@@ -86,7 +86,7 @@ class AuthServices {
         onSuccess: () async{
           SharedPreferences pref = await SharedPreferences.getInstance();
           userProvider.setUser(res.body);
-          ProductServices().getProduct(
+          await ProductServices().getProduct(
             context: context,
             token: jsonDecode(res.body)['token'], // Utiliser le token de l'utilisateur
           );

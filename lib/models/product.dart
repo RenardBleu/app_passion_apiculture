@@ -5,7 +5,7 @@ class Product {
   final String title;
   final String descrip;
   final String prix;
-  final String idType;
+  final String type;
   final String minia;
   final String createAt;
   final String updateAt;
@@ -14,7 +14,7 @@ class Product {
     required this.title,
     required this.descrip,
     required this.prix,
-    required this.idType,
+    required this.type,
     required this.minia,
     required this.createAt,
     required this.updateAt
@@ -25,7 +25,7 @@ class Product {
       'title': title,
       'descrip': descrip,
       'prix': prix,
-      'idType': idType,
+      'idType': type,
       'minia': minia,
       'createAt': createAt,
       'updateAt': updateAt,
@@ -53,7 +53,7 @@ class Product {
       title: map['title'] ?? '',
       descrip: map['description'],
       prix: map['prix'].toString(),
-      idType: map['idType'].toString(),
+      type: map['type'].toString(),
       minia: map['miniature'] ?? '',
       updateAt: map['UpdateAt'] ?? '',
       createAt: map['CreateAt'] ?? '',

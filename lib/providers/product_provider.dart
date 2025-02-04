@@ -8,9 +8,6 @@ class ProductProvider extends ChangeNotifier {
 
   void setProducts(String jsonResponse) {
     _products = Product.fromJson(jsonResponse);
-    print("+++++++++++++++++++++++++++++");
-    print(_products[1].title);
-    print("+++++++++++++++++++++++++++++");
     notifyListeners();
   }
 
