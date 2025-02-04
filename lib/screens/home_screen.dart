@@ -1,9 +1,8 @@
-import 'package:app_passion_apiculture/models/product.dart';
 import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:app_passion_apiculture/providers/product_provider.dart';
+import 'package:app_passion_apiculture/services/product_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:app_passion_apiculture/services/product_services.dart';
 import 'package:app_passion_apiculture/screens/accueil_screen.dart';
 import 'package:app_passion_apiculture/screens/user_screen.dart';
 import 'package:app_passion_apiculture/screens/commande_screen.dart';
@@ -24,7 +23,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late int _currentIndex;
-  late Future<List<Product>> _productFture;
 
   @override
   void initState() {

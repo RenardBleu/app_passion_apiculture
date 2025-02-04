@@ -28,25 +28,43 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyappState extends State<MyApp>{
+  bool _isInitialized = false;
   final AuthServices authServices = AuthServices();
   final ProductServices productServices = ProductServices();
 
   @override
   void initState(){
     super.initState();
-    authServices.getUserData(context);
+  }
+
+  Future<void> _initializeUserData() async { // Fonction d'initialisation asynchrone
+    authServices.getUserData(context); // Important: await ici
+    setState(() {
+      _isInitialized = true; // Marquer l'initialisation comme terminée
+    });
   }
 
 
    @override
   Widget build(BuildContext context) {
+
+    if (_isInitialized) {
+      return const MaterialApp( // <-- MaterialApp ici pour l'écran de chargement
+        home: Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Admin Passion Apiculture',
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: Provider.of<UserProvider>(context).user.token.isEmpty ? const LoginScreen(): HomeScreen() ,
+      home: Provider.of<UserProvider>(context).user.token.isEmpty
+          ? const LoginScreen()
+          : HomeScreen(),
     );
   }
 }

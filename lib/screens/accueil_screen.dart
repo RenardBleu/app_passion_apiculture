@@ -28,6 +28,7 @@ class AccueilScreen extends StatelessWidget {
 
   final List<String> name = <String>['Agathe Jost | Miel lavande', 'Pierre chabrier | Cristaux de menthe', 'Alexis Labaste | de l\'inspi'];
   final List<String> status = ["Livraison en cours", "Commande passé", "Commande en préparation"];
+  final List<Product> recentProduits = [products[0], products[1]];
 
     return 
     ListView(
@@ -74,126 +75,67 @@ class AccueilScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
-                            width: 170,
-                            height: 300,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 221, 221, 221),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color.fromARGB(40, 0, 0, 0),
-                                  spreadRadius: 3,
-                                  blurRadius: 5,
-                                   offset: Offset(0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(
-                                  Icons.image, 
-                                  size: 140,
-                                  color: const Color.fromARGB(255, 249, 177, 20),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,                                    children: [
-                                     Text(
-                                      textAlign: TextAlign.start,
-                                      "Product name sdfsdfsd fsfsf", 
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          textAlign: TextAlign.start,
-                                          "300€",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ), 
-                                        ),
-                                        Text(
-                                          "Bougie",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
+                              for (var produit in recentProduits)
 
-                          //B2
-                          Container(
-                            margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
-                            width: 170,
-                            height: 300,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 221, 221, 221),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color.fromARGB(40, 0, 0, 0),
-                                  spreadRadius: 3,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 3),
+                              Container(
+                                margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
+                                width: 170,
+                                height: 300,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color.fromARGB(255, 221, 221, 221),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color.fromARGB(40, 0, 0, 0),
+                                      spreadRadius: 3,
+                                      blurRadius: 5,
+                                      offset: Offset(0, 3), // changes position of shadow
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.image, 
-                                    size: 140,
-                                    color: const Color.fromARGB(255, 249, 177, 20),
-                                  ),
-                                  Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,                                    children: [
-                                    Text(
-                                      textAlign: TextAlign.start,
-                                      "Product name", 
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold
-                                      ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.image, 
+                                      size: 140,
+                                      color: const Color.fromARGB(255, 249, 177, 20),
                                     ),
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
+                                      crossAxisAlignment: CrossAxisAlignment.start,                                    children: [
                                         Text(
                                           textAlign: TextAlign.start,
-                                          "xxx€",
+                                          produit.title, 
                                           style: TextStyle(
-                                            fontSize: 18,
-                                          ), 
-                                        ),
-                                        Text(
-                                          "categorie name",
-                                          style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold
                                           ),
                                         ),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              textAlign: TextAlign.start,
+                                              produit.prix,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                              ), 
+                                            ),
+                                            Text(
+                                              produit.idType,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     )
                                   ],
-                                )
-                              ],
-                            ),
-                          ),
+                                ),
+                              ),
                         ],
                       ),
 
@@ -306,7 +248,7 @@ class AccueilScreen extends StatelessWidget {
                         child: 
                           ElevatedButton(
                           onPressed: () {
-                            print(products);
+                            print(products[1].title);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(255, 249, 177, 20),
@@ -318,7 +260,7 @@ class AccueilScreen extends StatelessWidget {
                             )
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -86,11 +86,20 @@ class AuthServices {
         onSuccess: () async{
           SharedPreferences pref = await SharedPreferences.getInstance();
           userProvider.setUser(res.body);
+          ProductServices().getProduct(
+            context: context,
+            token: jsonDecode(res.body)['token'], // Utiliser le token de l'utilisateur
+          );
           await pref.setString('x-auth-token', jsonDecode(res.body)['token']);
+
+
+          // Appeler getProduct pour récupérer les produits
+          
+          print("==================");
+          print(productProvider.products);
+          print("==================");
           navigator.pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ),
+            MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false,
           );
         },
