@@ -1,3 +1,4 @@
+import 'package:app_passion_apiculture/models/product.dart';
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
@@ -6,7 +7,9 @@ import 'package:flutter/material.dart';
 
 class AccueilScreen extends StatelessWidget {
 
-  final User user; 
+  final User user;
+  
+  final List<Product> products; 
 
   const AccueilScreen(this.user, this.products, {Key? key}) : super(key: key);
   
@@ -14,13 +17,6 @@ class AccueilScreen extends StatelessWidget {
 
   void signOutUser(BuildContext context) {
     AuthServices().signOut(context);
-  }
-
-  void GetProduct(BuildContext context, String token){
-    ProductServices().getProduct(
-      context: context, 
-      token: user.token
-      );
   }
 
   /* void GetProduct(BuildContext contex){
@@ -310,7 +306,7 @@ class AccueilScreen extends StatelessWidget {
                         child: 
                           ElevatedButton(
                           onPressed: () {
-                            
+                            print(products);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(255, 249, 177, 20),

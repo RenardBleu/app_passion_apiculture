@@ -1,6 +1,8 @@
+import 'package:app_passion_apiculture/providers/product_provider.dart';
 import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/screens/login_screen.dart';
+import 'package:app_passion_apiculture/services/product_services.dart';
 import 'package:app_passion_apiculture/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_passion_apiculture/utils/utils.dart';
@@ -66,6 +68,7 @@ class AuthServices {
   async {
     try {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
+      var productProvider = Provider.of<ProductProvider>(context, listen: false);
       final navigator = Navigator.of(context);
       http.Response res = await http.post(
         Uri.parse('${Constants.uri}/api/signin'),
@@ -84,7 +87,6 @@ class AuthServices {
           SharedPreferences pref = await SharedPreferences.getInstance();
           userProvider.setUser(res.body);
           await pref.setString('x-auth-token', jsonDecode(res.body)['token']);
-          print(userProvider.user.email);
           navigator.pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => HomeScreen(),
