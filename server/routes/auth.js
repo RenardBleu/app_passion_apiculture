@@ -68,7 +68,6 @@ authRouter.post("/api/signin", async (req, res) => {
         }
 
         const isMatch = await bcryptjs.compare(password, user.mdp);
-        console.log(user)
         if(!isMatch){
             return res.status(400).json({
                 success: false,

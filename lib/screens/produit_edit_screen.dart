@@ -2,6 +2,7 @@ import 'package:app_passion_apiculture/models/product.dart';
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProductEditScreen extends StatelessWidget {
 
@@ -14,18 +15,29 @@ class ProductEditScreen extends StatelessWidget {
     AuthServices().signOut(context);
   }
 
+  String formatDate(String isoDate) {
+    DateTime dateTime = DateTime.parse(isoDate);
+
+    String formattedDate = DateFormat('dd/MM/yyyy - HH:mm').format(dateTime);
+    return formattedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
 
+    final TextEditingController titleController = TextEditingController(text : product.title);
+    final TextEditingController prixController = TextEditingController(text: product.prix);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('${product.title}'),
+        title: Text(product.title),
       ),
       body: ListView(
         children: [
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   margin: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 20),
@@ -39,7 +51,7 @@ class ProductEditScreen extends StatelessWidget {
                         color: const Color.fromARGB(50, 0, 0, 0),
                         spreadRadius: 3,
                         blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
@@ -73,7 +85,7 @@ class ProductEditScreen extends StatelessWidget {
                                   '${product.prix} €',
                                   style: TextStyle(
                                     fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                                 Text(
@@ -88,37 +100,62 @@ class ProductEditScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      Text(
-                        product.descrip,
-                        style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Row(
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'dernière modification : ',
+                            "Description :",
                             style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            product.updateAt,
+                            product.descrip,
                             style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
                             ),
                           ),
+                          SizedBox(height: 10,),
+                          Row(
+                            children: [
+                              Text(
+                                'Dernière modification : ',
+                                style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                formatDate(product.updateAt),
+                                style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          )
                         ],
-                      )
+                      ),
                     ],
                   )
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
+                  margin: EdgeInsets.only(left: 20),
+                  child: 
+                  Text(
+                    "Statistique du produit : ",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
                   width: 400,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -135,47 +172,82 @@ class ProductEditScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            "qsdqsd le : ",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          Text(
-                            'xxxx',
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "dqsdqd : ",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          Text(
-                            'sdfsdf',
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
                       Text(
-                            "Y aura un form ici pour edit le produit : ",
+                            "Aucun système de stat pour le moment",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold
                             ),
                           ),
+                    ],
+                  )
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: 
+                  Text(
+                    "Modifier le produit : ",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+                  width: 400,
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color.fromARGB(255, 221, 221, 221),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color.fromARGB(50, 0, 0, 0),
+                        spreadRadius: 3,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: titleController,
+                        cursorColor: Color.fromARGB(255, 249, 177, 20),
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(color: Colors.black),
+                          enabledBorder:OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                          focusedBorder:OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          border: OutlineInputBorder(),
+                          labelText: 'Nom du produit',
+                          //prefixIcon: Icon(Icons.email, color: Colors.black,),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        
+                        controller: prixController,
+                        cursorColor: Color.fromARGB(255, 249, 177, 20),
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(color: Colors.black),
+                          enabledBorder:OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                          focusedBorder:OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          border: OutlineInputBorder(),
+                          labelText: 'Prix',
+                          //prefixIcon: Icon(Icons.lock, color: Colors.black,),
+                        ),
+                      ),
                     ],
                   )
                 ),

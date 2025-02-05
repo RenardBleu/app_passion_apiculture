@@ -1,6 +1,7 @@
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class UserScreen extends StatelessWidget {
 
@@ -10,6 +11,13 @@ class UserScreen extends StatelessWidget {
 
   void signOutUser(BuildContext context) {
     AuthServices().signOut(context);
+  }
+
+  String formatDate(String isoDate) {
+    DateTime dateTime = DateTime.parse(isoDate);
+
+    String formattedDate = DateFormat('d MMMM yyyy').format(dateTime);
+    return formattedDate;
   }
 
   @override
@@ -105,7 +113,7 @@ class UserScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        user.createAt,
+                        formatDate(user.createAt),
                         style: TextStyle(
                           fontSize: 15,
                         ),
