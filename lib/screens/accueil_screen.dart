@@ -2,7 +2,6 @@ import 'package:app_passion_apiculture/models/product.dart';
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
-import 'package:app_passion_apiculture/services/product_services.dart';
 import 'package:flutter/material.dart';
 
 class AccueilScreen extends StatelessWidget {
@@ -263,8 +262,6 @@ class AccueilScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-
-
               ],
             ),
           ],

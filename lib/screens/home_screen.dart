@@ -32,8 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
 @override
   Widget build(BuildContext context) {
 
+    bool isLoading = false;
+
     final user = Provider.of<UserProvider>(context).user;
     final product = Provider.of<ProductProvider>(context).products;
+
+    if (product.isNotEmpty){
+      isLoading = true;
+    }
 
     final List<List> screens = [
       [AccueilScreen(user, product), "Accueil"],
@@ -64,7 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ]
       ),
-      body: screens[_currentIndex][0], // Change le contenu ici
+      body: !isLoading
+        ?Center(
+          child: CircularProgressIndicator(),
+        )
+        : screens[_currentIndex][0],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.black,
