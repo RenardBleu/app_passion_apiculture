@@ -2,6 +2,7 @@ import 'package:app_passion_apiculture/models/product.dart';
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class ProductEditScreen extends StatelessWidget {
@@ -27,6 +28,10 @@ class ProductEditScreen extends StatelessWidget {
 
     final TextEditingController titleController = TextEditingController(text : product.title);
     final TextEditingController prixController = TextEditingController(text: product.prix);
+    final TextEditingController descripController = TextEditingController(text: product.descrip);
+    final String typeController = product.type;
+
+    const List<String> list = <String>['miel', 'bougie', 'autre'];
 
     return Scaffold(
       appBar: AppBar(
@@ -225,13 +230,14 @@ class ProductEditScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)
                           ),
                           border: OutlineInputBorder(),
-                          labelText: 'Nom du produit',
+                          labelText: 'Nom',
                           //prefixIcon: Icon(Icons.email, color: Colors.black,),
                         ),
                       ),
                       const SizedBox(height: 20),
                       TextField(
-                        
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [ FilteringTextInputFormatter.allow(RegExp(r'[\d\.]'))], 
                         controller: prixController,
                         cursorColor: Color.fromARGB(255, 249, 177, 20),
                         decoration: InputDecoration(
@@ -248,21 +254,64 @@ class ProductEditScreen extends StatelessWidget {
                           //prefixIcon: Icon(Icons.lock, color: Colors.black,),
                         ),
                       ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: descripController,
+                        cursorColor: Color.fromARGB(255, 249, 177, 20),
+                        maxLines: 6,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(color: Colors.black),
+                          enabledBorder:OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                          focusedBorder:OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          border: OutlineInputBorder(),
+                          labelText: 'Description',
+                          //prefixIcon: Icon(Icons.email, color: Colors.black,),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      DropdownMenu<String>(
+                        inputDecorationTheme: InputDecorationTheme(
+                          labelStyle: TextStyle(color: Colors.black),
+                          enabledBorder:OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
+                        initialSelection: list.contains(typeController) ? typeController : null,
+                        onSelected: (String? value) {
+                          print(value);
+                        },
+                        dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
+                          return DropdownMenuEntry<String>(value: value, label: value);
+                        }).toList(),
+                      )
                     ],
                   )
                 ),
-                ElevatedButton(
-                  onPressed: () => {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 249, 177, 20),
+                Container(
+                  child: 
+                  Center(
+                    child: 
+                    ElevatedButton(
+                    onPressed: () {
+                      print(typeController);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 249, 177, 20),
+                    ),
+                    child: const Text(
+                      'Modifier',
+                      style: TextStyle(
+                        color: Colors.black,
+                      )
+                    ),
                   ),
-                  child: const Text(
-                    'Modifier',
-                    style: TextStyle(
-                      color: Colors.black,
-                    )
-                  ),
-                ),
+                  )
+                )
               ],
             )
           )
