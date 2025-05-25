@@ -4,17 +4,21 @@ class Product {
   final String id;
   final String title;
   final String descrip;
+  final String caracteristique;
   final String prix;
   final String type;
   final String minia;
+  final String libelleType;
   final String createAt;
   final String updateAt;
   Product({
     required this.id,
     required this.title,
     required this.descrip,
+    required this.caracteristique,
     required this.prix,
     required this.type,
+    required this.libelleType,
     required this.minia,
     required this.createAt,
     required this.updateAt
@@ -24,8 +28,10 @@ class Product {
     return {
       'title': title,
       'descrip': descrip,
+      'caracteristique': caracteristique,
       'prix': prix,
       'idType': type,
+      'libelletype': libelleType,
       'minia': minia,
       'createAt': createAt,
       'updateAt': updateAt,
@@ -52,11 +58,13 @@ class Product {
       id: map['id'].toString(),
       title: map['title'] ?? '',
       descrip: map['description'],
+      caracteristique: map['caracteristique'] ?? '',
       prix: map['prix'].toString(),
       type: map['type'].toString(),
-      minia: map['miniature'] ?? '',
-      updateAt: map['UpdateAt'] ?? '',
-      createAt: map['CreateAt'] ?? '',
+      libelleType: map['libelletype'] ?? '',
+      minia: map['miniature'] ?? 'No_Image',
+      updateAt: map['updateAt'] ?? '',
+      createAt: map['createAt'] ?? '',
     );
   }
 

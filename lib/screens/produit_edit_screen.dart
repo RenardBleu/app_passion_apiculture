@@ -16,11 +16,16 @@ class ProductEditScreen extends StatelessWidget {
     AuthServices().signOut(context);
   }
 
-  String formatDate(String isoDate) {
-    DateTime dateTime = DateTime.parse(isoDate);
-
-    String formattedDate = DateFormat('dd/MM/yyyy - HH:mm').format(dateTime);
-    return formattedDate;
+  String formatDate(String? isoDate) {
+    if (isoDate == null || isoDate.isEmpty) {
+      return "Date invalide"; // Gérer les dates nulles ou vides
+    }
+    try {
+      DateTime dateTime = DateTime.parse(isoDate);
+      return DateFormat('dd/MM/yyyy - HH:mm').format(dateTime);
+    } catch (e) {
+      return "Format de date invalide"; // Gérer les erreurs de format
+    }
   }
 
   @override
@@ -29,6 +34,7 @@ class ProductEditScreen extends StatelessWidget {
     final TextEditingController titleController = TextEditingController(text : product.title);
     final TextEditingController prixController = TextEditingController(text: product.prix);
     final TextEditingController descripController = TextEditingController(text: product.descrip);
+    final TextEditingController caractController = TextEditingController(text: product.caracteristique);
     final String typeController = product.type;
 
     const List<String> list = <String>['miel', 'bougie', 'autre'];
@@ -63,13 +69,28 @@ class ProductEditScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Row(
+                        spacing: 10,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.image, 
-                            size: 150,
-                            color: const Color.fromARGB(255, 249, 177, 20),
-                          ),
+                          product.minia != "No_Image"
+                              ? Container(
+                                  width: 150,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        'https://renardserveur.freeboxos.fr/e-commerce-alexis/public/${product.minia}',
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                              )
+                              : Icon(
+                                  Icons.image,
+                                  size: 150,
+                                  color: const Color.fromARGB(255, 249, 177, 20),
+                                ),
                           Expanded( // Permet au texte de prendre l'espace disponible
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start, // Aligne les éléments en haut
@@ -274,6 +295,25 @@ class ProductEditScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
+                      TextField(
+                        controller: caractController,
+                        cursorColor: Color.fromARGB(255, 249, 177, 20),
+                        maxLines: 6,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(color: Colors.black),
+                          enabledBorder:OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                          focusedBorder:OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          border: OutlineInputBorder(),
+                          labelText: 'Caractéristique (séparer les données par des //)',
+                          //prefixIcon: Icon(Icons.email, color: Colors.black,),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       DropdownMenu<String>(
                         inputDecorationTheme: InputDecorationTheme(
                           labelStyle: TextStyle(color: Colors.black),
@@ -288,7 +328,14 @@ class ProductEditScreen extends StatelessWidget {
                         dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
                           return DropdownMenuEntry<String>(value: value, label: value);
                         }).toList(),
-                      )
+                      ),
+                      Text(
+                        "Pour modifier ou ajouter une image, veuillez vous rendre sur la version web.*",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
                     ],
                   )
                 ),

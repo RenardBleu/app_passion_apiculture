@@ -1,6 +1,7 @@
 import 'package:app_passion_apiculture/models/product.dart';
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
+import 'package:app_passion_apiculture/screens/produit_edit_screen.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
@@ -73,67 +74,91 @@ class AccueilScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                              for (var produit in recentProduits)
-
-                              Container(
-                                margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
-                                width: 170,
-                                height: 300,
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color.fromARGB(255, 221, 221, 221),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color.fromARGB(40, 0, 0, 0),
-                                      spreadRadius: 3,
-                                      blurRadius: 5,
-                                      offset: Offset(0, 3), // changes position of shadow
-                                    ),
-                                  ],
+                          for (var produit in recentProduits)
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductEditScreen(user, produit),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.image, 
-                                      size: 140,
-                                      color: const Color.fromARGB(255, 249, 177, 20),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,                                    children: [
-                                        Text(
-                                          textAlign: TextAlign.start,
-                                          produit.title, 
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold
+                                elevation: 3,
+                                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                                child: Container(
+                                  width: 170, // Forcer la largeur à 170
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                                        child: produit.minia != 'No_Image'
+                                            ? Image.network(
+                                                'https://renardserveur.freeboxos.fr/e-commerce-alexis/public/${produit.minia}',
+                                                height: 140,
+                                                width: 170,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Container(
+                                                height: 140,
+                                                width: 170,
+                                                color: const Color.fromARGB(255, 249, 177, 20),
+                                                child: Center(
+                                                  child: Icon(
+                                                    Icons.image,
+                                                    size: 80,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Container(
+                                          width: 170,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                produit.title,
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black87,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                '${produit.prix} €',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                produit.libelleType,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black45,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              textAlign: TextAlign.start,
-                                              produit.prix,
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                              ), 
-                                            ),
-                                            Text(
-                                              produit.type,
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    )
-                                  ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
+                            ),
                         ],
                       ),
 
