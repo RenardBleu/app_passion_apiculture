@@ -1,3 +1,4 @@
+import 'package:app_passion_apiculture/providers/commande_provider.dart';
 import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:app_passion_apiculture/providers/product_provider.dart';
 import 'package:provider/provider.dart';
@@ -36,16 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final user = Provider.of<UserProvider>(context).user;
     final product = Provider.of<ProductProvider>(context).products;
+    final commande = Provider.of<CommandeProvider>(context).commandes;
 
     if (product.isNotEmpty){
       isLoading = true;
     }
 
     final List<List> screens = [
-      [AccueilScreen(user, product), "Accueil"],
+      [AccueilScreen(user, product, commande), "Accueil"],
       [ProduitScreen(user, product), "Catalogue"],
-      [CommandeScreen(user), "Commande"],
-      [StockScreen(user), "Stock"],
+      [CommandeScreen(user, commande), "Commande"],
+      [StockScreen(user, product), "Stock"],
       [StatScreen(user), "Statistique"]
   ];
 

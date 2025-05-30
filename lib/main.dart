@@ -1,9 +1,13 @@
 import 'package:app_passion_apiculture/providers/product_provider.dart';
 import 'package:app_passion_apiculture/providers/user_provider.dart';
+import 'package:app_passion_apiculture/providers/tag_provider.dart';
+import 'package:app_passion_apiculture/providers/commande_provider.dart';
+import 'package:app_passion_apiculture/providers/type_provider.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:app_passion_apiculture/screens/login_screen.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/services/product_services.dart';
+import 'package:app_passion_apiculture/services/commande_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +19,9 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => TypeProvider()),
+        ChangeNotifierProvider(create: (_) => CommandeProvider()),
+        ChangeNotifierProvider(create: (_) => TagProvider()),
       ],
       child: const MyApp(),
     ));
@@ -31,6 +38,8 @@ class _MyappState extends State<MyApp>{
   bool _isInitialized = false;
   final AuthServices authServices = AuthServices();
   final ProductServices productServices = ProductServices();
+  final CommandeServices commandeServices = CommandeServices();
+
 
   @override
   void initState(){

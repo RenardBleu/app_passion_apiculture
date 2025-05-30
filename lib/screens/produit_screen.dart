@@ -21,10 +21,6 @@ class ProduitScreen extends StatelessWidget {
     final List<Product> recentProduits = products;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Produits'),
-        backgroundColor: const Color.fromARGB(255, 249, 177, 20),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GridView.builder(

@@ -37,7 +37,7 @@ class User {
       email: map['user']['email'] ?? '',
       token: map['token'] ?? '',
       password: map['user']['password'] ?? '',
-      createAt: map['user']['CreateAt'] ?? ''
+      createAt: map['user']['createAt'] ?? ''
     );
   }
 

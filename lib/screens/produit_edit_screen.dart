@@ -1,16 +1,93 @@
 import 'package:app_passion_apiculture/models/product.dart';
+import 'package:app_passion_apiculture/services/product_services.dart';
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
+import 'package:app_passion_apiculture/providers/type_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart'; 
 
-class ProductEditScreen extends StatelessWidget {
-
+class ProductEditScreen extends StatefulWidget {
   final Product product; 
   final User user;
 
   const ProductEditScreen(this.user, this.product, {Key? key}) : super(key: key);
+
+  @override
+  State<ProductEditScreen> createState() => _ProductEditScreenState();
+}
+
+class _ProductEditScreenState extends State<ProductEditScreen> {
+  late TextEditingController titleController;
+  late TextEditingController prixController;
+  late TextEditingController descripController;
+  late TextEditingController caractController;
+  String? selectedType;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.product.title);
+    prixController = TextEditingController(text: widget.product.prix);
+    descripController = TextEditingController(text: widget.product.descrip);
+    caractController = TextEditingController(text: widget.product.caracteristique);
+    selectedType = widget.product.type;
+  }
+
+  void editProduct() async {
+    // Mettre à jour les valeurs du produit
+
+    final Product oldProduct = widget.product;
+
+    setState(() {
+      widget.product.title = titleController.text;
+      widget.product.prix = prixController.text;
+      widget.product.descrip = descripController.text;
+      widget.product.caracteristique = caractController.text;
+      widget.product.type = selectedType ?? widget.product.type;
+    });
+
+     final products = await ProductServices().editProduct(
+      context: context,
+      token: widget.user.token,
+      product: widget.product,
+    );
+
+    if (!products) {
+      setState(() {
+        widget.product.title = oldProduct.title;
+        widget.product.prix = oldProduct.prix;
+        widget.product.descrip = oldProduct.descrip;
+        widget.product.caracteristique = oldProduct.caracteristique;
+        widget.product.type = selectedType ?? oldProduct.type;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Erreur lors de l\'edition du produit'),
+        backgroundColor: Colors.red,
+      ),
+    );
+    }else{
+      // Afficher un message de succès
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Produit modifié avec succès'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    prixController.dispose();
+    descripController.dispose();
+    caractController.dispose();
+    super.dispose();
+  }
 
   void signOutUser(BuildContext context) {
     AuthServices().signOut(context);
@@ -18,30 +95,25 @@ class ProductEditScreen extends StatelessWidget {
 
   String formatDate(String? isoDate) {
     if (isoDate == null || isoDate.isEmpty) {
-      return "Date invalide"; // Gérer les dates nulles ou vides
+      return "Date invalide";
     }
     try {
       DateTime dateTime = DateTime.parse(isoDate);
       return DateFormat('dd/MM/yyyy - HH:mm').format(dateTime);
     } catch (e) {
-      return "Format de date invalide"; // Gérer les erreurs de format
+      return "Format de date invalide";
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
-    final TextEditingController titleController = TextEditingController(text : product.title);
-    final TextEditingController prixController = TextEditingController(text: product.prix);
-    final TextEditingController descripController = TextEditingController(text: product.descrip);
-    final TextEditingController caractController = TextEditingController(text: product.caracteristique);
-    final String typeController = product.type;
-
-    const List<String> list = <String>['miel', 'bougie', 'autre'];
+    final typeProvider = Provider.of<TypeProvider>(context);
+    final types = typeProvider.types;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.title),
+        title: Text('Modifier le produit'),
+        backgroundColor: const Color.fromARGB(255, 249, 177, 20),
       ),
       body: ListView(
         children: [
@@ -50,8 +122,9 @@ class ProductEditScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Affichage du produit actuel
                 Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 20),
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
                   width: 400,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -72,7 +145,7 @@ class ProductEditScreen extends StatelessWidget {
                         spacing: 10,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          product.minia != "No_Image"
+                          widget.product.minia != "No_Image"
                               ? Container(
                                   width: 150,
                                   height: 150,
@@ -80,42 +153,42 @@ class ProductEditScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                        'https://renardserveur.freeboxos.fr/e-commerce-alexis/public/${product.minia}',
+                                        'https://renardserveur.freeboxos.fr/e-commerce-alexis/public/${widget.product.minia}',
                                       ),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                              )
+                                )
                               : Icon(
                                   Icons.image,
                                   size: 150,
                                   color: const Color.fromARGB(255, 249, 177, 20),
                                 ),
-                          Expanded( // Permet au texte de prendre l'espace disponible
+                          Expanded(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start, // Aligne les éléments en haut
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  product.title,
+                                  widget.product.title,
                                   textAlign: TextAlign.start,
                                   maxLines: 2,
-                                  overflow: TextOverflow.ellipsis, // Coupe si dépassement
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontSize: 20, // Ajuste la taille si besoin
+                                    fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 5), // Espacement entre le titre et le prix
+                                SizedBox(height: 5),
                                 Text(
-                                  '${product.prix} €',
+                                  '${widget.product.prix} €',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
                                 Text(
-                                  product.type,
+                                  widget.product.libelleType,
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.normal,
@@ -126,60 +199,45 @@ class ProductEditScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      SizedBox(height: 20),
+                      Text(
+                        "Description :",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        widget.product.descrip,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
                         children: [
                           Text(
-                            "Description :",
+                            'Dernière modification : ',
                             style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            product.descrip,
+                            formatDate(widget.product.updateAt),
                             style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
-                          SizedBox(height: 10,),
-                          Row(
-                            children: [
-                              Text(
-                                'Dernière modification : ',
-                                style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                formatDate(product.updateAt),
-                                style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          )
                         ],
                       ),
                     ],
-                  )
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: 
-                  Text(
-                    "Statistique du produit : ",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold
-                    ),
                   ),
                 ),
+
+                // Formulaire de modification
                 Container(
                   margin: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
                   width: 400,
@@ -192,47 +250,7 @@ class ProductEditScreen extends StatelessWidget {
                         color: const Color.fromARGB(50, 0, 0, 0),
                         spreadRadius: 3,
                         blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                            "Aucun système de stat pour le moment",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                    ],
-                  )
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: 
-                  Text(
-                    "Modifier le produit : ",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
-                  width: 400,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 221, 221, 221),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color.fromARGB(50, 0, 0, 0),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
@@ -243,36 +261,34 @@ class ProductEditScreen extends StatelessWidget {
                         cursorColor: Color.fromARGB(255, 249, 177, 20),
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.black),
-                          enabledBorder:OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                          focusedBorder:OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
                             borderRadius: BorderRadius.circular(10)
                           ),
                           border: OutlineInputBorder(),
                           labelText: 'Nom',
-                          //prefixIcon: Icon(Icons.email, color: Colors.black,),
                         ),
                       ),
                       const SizedBox(height: 20),
                       TextField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [ FilteringTextInputFormatter.allow(RegExp(r'[\d\.]'))], 
                         controller: prixController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d\.]'))],
                         cursorColor: Color.fromARGB(255, 249, 177, 20),
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.black),
-                          enabledBorder:OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                          focusedBorder:OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
                             borderRadius: BorderRadius.circular(10)
                           ),
                           border: OutlineInputBorder(),
                           labelText: 'Prix',
-                          //prefixIcon: Icon(Icons.lock, color: Colors.black,),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -282,16 +298,15 @@ class ProductEditScreen extends StatelessWidget {
                         maxLines: 6,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.black),
-                          enabledBorder:OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                          focusedBorder:OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
                             borderRadius: BorderRadius.circular(10)
                           ),
                           border: OutlineInputBorder(),
                           labelText: 'Description',
-                          //prefixIcon: Icon(Icons.email, color: Colors.black,),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -301,69 +316,84 @@ class ProductEditScreen extends StatelessWidget {
                         maxLines: 6,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.black),
-                          enabledBorder:OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                          focusedBorder:OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
                             borderRadius: BorderRadius.circular(10)
                           ),
                           border: OutlineInputBorder(),
                           labelText: 'Caractéristique (séparer les données par des //)',
-                          //prefixIcon: Icon(Icons.email, color: Colors.black,),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      DropdownMenu<String>(
-                        inputDecorationTheme: InputDecorationTheme(
-                          labelStyle: TextStyle(color: Colors.black),
-                          enabledBorder:OutlineInputBorder(
+                      if (types.isNotEmpty)
+                        DropdownButtonFormField<String>(
+                          value: types.any((type) => type.id == selectedType) ? selectedType : null,
+                          decoration: InputDecoration(
+                            labelStyle: TextStyle(color: Colors.black),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color.fromARGB(80, 249, 177, 20), width: 5),
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                            border: OutlineInputBorder(),
+                            labelText: 'Type',
                           ),
-                        ),
-                        initialSelection: list.contains(typeController) ? typeController : null,
-                        onSelected: (String? value) {
-                          print(value);
-                        },
-                        dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
-                          return DropdownMenuEntry<String>(value: value, label: value);
-                        }).toList(),
-                      ),
+                          items: types.map((type) {
+                            return DropdownMenuItem<String>(
+                              value: type.id,
+                              child: Text(type.libelle),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedType = newValue;
+                            });
+                          },
+                        )
+                      else
+                        Text('Aucun type disponible'),
+                      const SizedBox(height: 20),
                       Text(
-                        "Pour modifier ou ajouter une image, veuillez vous rendre sur la version web.*",
+                        "Pour modifier l'image, veuillez vous rendre sur la version web.*",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ),
                 Container(
-                  child: 
-                  Center(
-                    child: 
-                    ElevatedButton(
-                    onPressed: () {
-                      print(typeController);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 249, 177, 20),
-                    ),
-                    child: const Text(
-                      'Modifier',
-                      style: TextStyle(
-                        color: Colors.black,
-                      )
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // TODO: Implémenter la sauvegarde
+                        editProduct();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 249, 177, 20),
+                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      ),
+                      child: const Text(
+                        'Modifier',
+                        style: TextStyle(
+                          color: Colors.black,
+                        )
+                      ),
                     ),
                   ),
-                  )
-                )
+                ),
               ],
-            )
-          )
+            ),
+          ),
         ],
-      )
+      ),
     );
   }
 }

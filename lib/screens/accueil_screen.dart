@@ -1,7 +1,9 @@
 import 'package:app_passion_apiculture/models/product.dart';
+import 'package:app_passion_apiculture/models/commande.dart';
 import 'package:app_passion_apiculture/models/user.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/screens/produit_edit_screen.dart';
+import 'package:app_passion_apiculture/screens/commande_edit_screen.dart';
 import 'package:app_passion_apiculture/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +12,10 @@ class AccueilScreen extends StatelessWidget {
   final User user;
   
   final List<Product> products; 
+  final List<Commande> commandes;
 
-  const AccueilScreen(this.user, this.products, {Key? key}) : super(key: key);
+
+  const AccueilScreen(this.user, this.products, this.commandes, {Key? key}) : super(key: key);
   
   get context => null;
 
@@ -23,12 +27,58 @@ class AccueilScreen extends StatelessWidget {
     ProductServices().getProduct(token: user.token, context: null);
   } */
 
+  Map<String, dynamic> getStatusStyle(String tagLibelle) {
+    switch (tagLibelle.toLowerCase()) {
+      case 'en attente':
+        return {
+          'color': Colors.orange,
+          'icon': Icons.hourglass_empty,
+        };
+      case 'en préparation':
+        return {
+          'color': Colors.blue,
+          'icon': Icons.restaurant,
+        };
+      case 'payée':
+        return {
+          'color': Colors.green,
+          'icon': Icons.payment,
+        };
+      case 'livrée':
+        return {
+          'color': Colors.purple,
+          'icon': Icons.check_circle,
+        };
+      case 'annulée':
+        return {
+          'color': Colors.red,
+          'icon': Icons.cancel,
+        };
+      case 'en cours de livraison':
+        return {
+          'color': Colors.teal,
+          'icon': Icons.local_shipping,
+        };
+      default:
+        return {
+          'color': Colors.grey,
+          'icon': Icons.shopping_cart,
+        };
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+  
+  // Prendre les 2 premiers produits s'ils existent
+  final List<Product> recentProduits = products.length >= 2 
+      ? [products[0], products[1]]
+      : products;
 
-  final List<String> name = <String>['Agathe Jost | Miel lavande', 'Pierre chabrier | Cristaux de menthe', 'Alexis Labaste | de l\'inspi'];
-  final List<String> status = ["Livraison en cours", "Commande passé", "Commande en préparation"];
-  final List<Product> recentProduits = [products[0], products[1]];
+  // Prendre les 3 premières commandes s'ils existent
+  final List<Commande> recentCommandes = commandes.length >=3 
+      ? commandes.take(3).toList()
+      : commandes;
 
     return 
     ListView(
@@ -219,27 +269,95 @@ class AccueilScreen extends StatelessWidget {
                       ),
                       Container(
                           margin: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                                BoxShadow(
-                                  color: const Color.fromARGB(40, 0, 0, 0),
-                                  spreadRadius: 3,
-                                  blurRadius: 5,
-                                   offset: Offset(0, 3), // changes position of shadow
-                                ),
-                              ],
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
                           child: ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: 3,
+                            itemCount: recentCommandes.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(name[index]),
-                                subtitle: Text(status[index]),
-                                leading: Icon(Icons.shopping_cart),
+                              return Card(
+                                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => CommandeEditScreen(user, recentCommandes[index])),
+                                    );
+                                  },
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: getStatusStyle(recentCommandes[index].tagLibelle)['color'].withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          child: Icon(
+                                            getStatusStyle(recentCommandes[index].tagLibelle)['icon'],
+                                            color: getStatusStyle(recentCommandes[index].tagLibelle)['color'],
+                                          ),
+                                        ),
+                                        SizedBox(width: 12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    '${recentCommandes[index].nom} ${recentCommandes[index].prenom}',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                                    decoration: BoxDecoration(
+                                                      color: getStatusStyle(recentCommandes[index].tagLibelle)['color'].withOpacity(0.2),
+                                                      borderRadius: BorderRadius.circular(12),
+                                                    ),
+                                                    child: Text(
+                                                      recentCommandes[index].tagLibelle,
+                                                      style: TextStyle(
+                                                        color: getStatusStyle(recentCommandes[index].tagLibelle)['color'],
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                'N° ${recentCommandes[index].num}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey[600],
+                                                ),
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                '${recentCommandes[index].montant} €',
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               );
                             },
                           ),
@@ -260,24 +378,6 @@ class AccueilScreen extends StatelessWidget {
                           ),
                           child: const Text(
                             'Voir plus',
-                            style: TextStyle(
-                              color: Colors.black,
-                            )
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 5),
-                        child: 
-                          ElevatedButton(
-                          onPressed: () {
-                            print(products[1].title);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 249, 177, 20),
-                          ),
-                          child: const Text(
-                            'Voir yoooo',
                             style: TextStyle(
                               color: Colors.black,
                             )

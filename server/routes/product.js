@@ -71,4 +71,76 @@ productRouter.post("/api/product/create", async (req, res) => {
     }
 });
 
+productRouter.post("/api/product/update", async (req, res) => {
+    const {id, title, description, prix, idType, miniature, caracteristiques, stock, token} = req.body;
+
+    if (!token) {
+        return res.status(401).json({ "message": "Aucun token d'authentification, accès refusé" });
+    }
+
+    try {
+        const verified = jwt.verify(token, "passwordKey");
+
+        if (!verified) {
+            return res.status(401).json({"message": "Vérification du token échoué, autorisation refusée"});
+        }
+
+        // Validation des données
+        if (!title || !description || !prix || !idType || !stock) {
+            return res.status(400).json({"message": "Tous les champs obligatoires doivent être remplis."});
+        }
+
+        const productData = {
+            title,
+            description,
+            prix: prix || 0,
+            idType,
+            miniature: miniature == 'No_Image' ? null : miniature || null,
+            caracteristiques: caracteristiques || null,
+            stock: stock || 0
+        };
+
+        // Mise à jour du stock
+        const productUpdate = await Product.update(id, productData);
+        res.status(200).json(productUpdate); // Retourne le message de succès ou d'erreur
+    } catch (e) {
+        if (e.message === "invalid signature") {
+            return res.status(401).json({ "message": "Vérification du token échoué, autorisation refusée" });
+        } else {
+            res.status(500).json({ "error": e.message });
+        }
+    }
+});
+
+productRouter.post("/api/product/update-stock", async (req, res) => {
+    const { id, stock, token } = req.body;
+
+    if (!token) {
+        return res.status(401).json({ "message": "Aucun token d'authentification, accès refusé" });
+    }
+
+    try {
+        const verified = jwt.verify(token, "passwordKey");
+
+        if (!verified) {
+            return res.status(401).json({ "message": "Vérification du token échoué, autorisation refusée" });
+        }
+
+        // Validation des données
+        if (!id || stock === undefined) {
+            return res.status(400).json({ "message": "L'ID du produit et le stock sont obligatoires." });
+        }
+
+        // Mise à jour du stock
+        const result = await Product.update(id, stock);
+        res.status(200).json(result); // Retourne le message de succès ou d'erreur
+    } catch (e) {
+        if (e.message === "invalid signature") {
+            return res.status(401).json({ "message": "Vérification du token échoué, autorisation refusée" });
+        } else {
+            res.status(500).json({ "error": e.message });
+        }
+    }
+});
+
 module.exports = productRouter;

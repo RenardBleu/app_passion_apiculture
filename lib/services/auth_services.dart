@@ -1,8 +1,14 @@
 import 'package:app_passion_apiculture/providers/product_provider.dart';
+import 'package:app_passion_apiculture/providers/commande_provider.dart';
+import 'package:app_passion_apiculture/providers/type_provider.dart';
+import 'package:app_passion_apiculture/providers/tag_provider.dart';
 import 'package:app_passion_apiculture/providers/user_provider.dart';
 import 'package:app_passion_apiculture/screens/home_screen.dart';
 import 'package:app_passion_apiculture/screens/login_screen.dart';
 import 'package:app_passion_apiculture/services/product_services.dart';
+import 'package:app_passion_apiculture/services/type_services.dart';
+import 'package:app_passion_apiculture/services/tag_services.dart';
+import 'package:app_passion_apiculture/services/commande_services.dart';
 import 'package:app_passion_apiculture/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_passion_apiculture/utils/utils.dart';
@@ -69,6 +75,9 @@ class AuthServices {
     try {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
       var productProvider = Provider.of<ProductProvider>(context, listen: false);
+      var typeProvider = Provider.of<TypeProvider>(context, listen: false);
+      var tagProvider = Provider.of<TagProvider>(context, listen: false);
+      var commandeProvider = Provider.of<CommandeProvider>(context, listen: false);
       final navigator = Navigator.of(context);
       http.Response res = await http.post(
         Uri.parse('${Constants.uri}/api/signin'),
@@ -86,18 +95,37 @@ class AuthServices {
         onSuccess: () async{
           SharedPreferences pref = await SharedPreferences.getInstance();
           userProvider.setUser(res.body);
-          await ProductServices().getProduct(
-            context: context,
-            token: jsonDecode(res.body)['token'], // Utiliser le token de l'utilisateur
-          );
+          
+          // Attendre que tous les services soient terminés
+          await Future.wait([
+            ProductServices().getProduct(
+              context: context,
+              token: jsonDecode(res.body)['token'],
+            ),
+            TypeServices().getType(
+              context: context,
+              token: jsonDecode(res.body)['token'],
+            ),
+            CommandeServices().getCommande(
+              context: context,
+              token: jsonDecode(res.body)['token'],
+            ),
+            TagServices().getTag(
+              context: context,
+              token: jsonDecode(res.body)['token'],
+            ),
+          ]);
+
           await pref.setString('x-auth-token', jsonDecode(res.body)['token']);
 
-
-          // Appeler getProduct pour récupérer les produits
-          
           print("==================");
           print(productProvider.products);
+          print(typeProvider.types);
+          print(commandeProvider.commandes);
+          print(tagProvider.tags);
           print("==================");
+          
+          // Navigation après que tout soit terminé
           navigator.pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false,

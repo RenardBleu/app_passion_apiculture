@@ -2,12 +2,13 @@ import 'dart:convert';
 
 class Product {
   final String id;
-  final String title;
-  final String descrip;
-  final String caracteristique;
-  final String prix;
-  final String type;
+  String title;
+  String descrip;
+  String caracteristique;
+  String prix;
+  String type;
   final String minia;
+  late int stock;
   final String libelleType;
   final String createAt;
   final String updateAt;
@@ -20,6 +21,7 @@ class Product {
     required this.type,
     required this.libelleType,
     required this.minia,
+    required this.stock,
     required this.createAt,
     required this.updateAt
   });
@@ -28,11 +30,12 @@ class Product {
     return {
       'title': title,
       'descrip': descrip,
-      'caracteristique': caracteristique,
+      'caracteristiques': caracteristique,
       'prix': prix,
       'idType': type,
       'libelletype': libelleType,
       'minia': minia,
+      'stock': stock,
       'createAt': createAt,
       'updateAt': updateAt,
     };
@@ -51,18 +54,19 @@ class Product {
     );
   } */
    factory Product.fromMap(Map<String, dynamic> map) {
-    print("======================================");
+    print("======================================0");
     print(map);
     print("======================================");
     return Product(
-      id: map['id'].toString(),
+      id: map['id']?.toString() ?? '',
       title: map['title'] ?? '',
-      descrip: map['description'],
-      caracteristique: map['caracteristique'] ?? '',
-      prix: map['prix'].toString(),
-      type: map['type'].toString(),
+      descrip: map['description'] ?? '',
+      caracteristique: map['caracteristiques'] ?? '',
+      prix: map['prix']?.toString() ?? '',
+      type: map['idType']?.toString() ?? '',
       libelleType: map['libelletype'] ?? '',
       minia: map['miniature'] ?? 'No_Image',
+      stock: map['stock'] is int ? map['stock'] : int.tryParse(map['stock']?.toString() ?? '0') ?? 0,
       updateAt: map['updateAt'] ?? '',
       createAt: map['createAt'] ?? '',
     );

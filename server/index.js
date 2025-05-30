@@ -4,6 +4,9 @@ const express = require('express');
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
 const typeRouter = require("./routes/type");
+const commandeRouter = require("./routes/commande");
+const tagRouter = require("./routes/tag");
+const commandeProductRouter = require("./routes/commande_product");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -13,6 +16,9 @@ app.use(express.json());
 app.use(authRouter);
 app.use(productRouter);
 app.use(typeRouter);
+app.use(commandeRouter);
+app.use(tagRouter);
+app.use(commandeProductRouter);
 
 app.listen(PORT, () => {
   console.log(`▮ Serveur API en écoute sur http://localhost:${PORT}`);
